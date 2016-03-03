@@ -9,6 +9,10 @@ angular.module('categories', [
                     'categories@': { //@symbol makes it an absolute path
                         controller: 'CategoriesListCtrl as categoriesListCtrl',
                         templateUrl: 'app/categories/categories.tmpl.html'
+                    },
+                    'bookmarks@': {
+                        controller: 'BookmarksListCtrl as bookmarksListCtrl',
+                        templateUrl: 'app/categories/bookmarks/bookmarks.tmpl.html'
                     }
                 }
             })

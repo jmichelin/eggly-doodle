@@ -22,11 +22,11 @@ angular.module('eggly.models.categories', [
         };
 
         model.getCategoryByName = function(categoryName) {
-            var deferred = $q.defer();
+            var deferred = $q.defer(); //creates deferred object
 
             function findCategory() {
-                return _.find(categories, function() {
-                    return c.name == categoryName;
+                return _.find(categories, function(c) {
+                    return c.name == categoryName; //compare to passed in name using compare.name to match
                 })
             }
 
@@ -39,7 +39,7 @@ angular.module('eggly.models.categories', [
                     })
             }
 
-            return deferred.promise;
+            return deferred.promise; //return deferred promise.
         }
 
     })
