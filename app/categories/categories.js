@@ -7,17 +7,18 @@ angular.module('categories', [
                 url: '/',
                 views: {
                     'categories@': { //@symbol makes it an absolute path
-                        controller: 'CategoriesCtrl',
+                        controller: 'CategoriesListCtrl as categoriesListCtrl',
                         templateUrl: 'app/categories/categories.tmpl.html'
-                    },
-                    'bookmarks@': {
-                        controller: 'BookmarksCtrl',
-                        templateUrl: 'app/categories/bookmarks/bookmarks.tmpl.html'
                     }
                 }
             })
     })
-    .controller('CategoriesCtrl', function CategoriesCtrl($scope){
+    .controller('CategoriesListCtrl', function CategoriesListCtrl(CategoriesModel){
+        var categoriesListCtrl = this;
 
+        CategoriesModel.getCategories()
+            .then(function(result){
+                categoriesListCtrl.categories = result;
+            });
     })
 ;

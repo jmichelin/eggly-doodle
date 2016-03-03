@@ -12,61 +12,29 @@ angular.module('Eggly', [
         ;
         $urlRouterProvider.otherwise('/');
     })
-    .controller('MainCtrl', function ($scope) {
-        $scope.categories = [
-            {"id": 1, "name": "Development"},
-            {"id": 2, "name": "Design"},
-            {"id": 3, "name": "Fellowship"},
-            {"id": 4, "name": "Best Practices"},
-            {"id": 5, "name": "Humor"}
-        ];
+    .controller('MainCtrl', function ($scope, $state) {
 
-        $scope.bookmarks = [
-            {"id": 0, "title": "AngularJS", "url": "https://angularjs.org/", "category": "Development"},
-            {
-                "id": 1,
-                "title": "Interview Prompts",
-                "url": "http://api.hackreactor.com/prompts/",
-                "category": "Fellowship"
-            },
-            {
-                "id": 2,
-                "title": "UX Booth - Best Practices",
-                "url": "http://www.uxbooth.com/articles/making-and-breaking-ux-best-practices/",
-                "category": "Best Practices"
-            },
-            {
-                "id": 3,
-                "title": "AngularJS Fundamentals",
-                "url": "https://egghead.io/series/angularjs-app-from-scratch-getting-started",
-                "category": "Development"
-            },
-            {"id": 4, "title": "Corgi", "url": "http://www.humorhound.com/tag/corgi-2/", "category": "Humor"},
-            {
-                "id": 5,
-                "title": "Information is Beautiful",
-                "url": "http://www.informationisbeautiful.net/",
-                "category": "Design"
-            }
-        ];
-
+        $scope.isEditing = false;
+        $scope.isCreating = false;
         $scope.currentCategory = null;
-
-        function setCurrentCategory(category) {
-            //console.log('category.name => ',category.name);
-            $scope.currentCategory = category;
-        }
+        $scope.editedBookmark = null;
 
         function isCurrentCategory(category) {
-            return category.name === $scope.currentCategory.name;
+            return $scope.currentCategory !== null && category.name === $scope.currentCategory.name;
+        }
+
+        function setCurrentCategory(category) {
+            $scope.currentCategory = category;
+            //$state.go('eggly.categories.bookmarks', { category:category.name });
+
+            //reset CRUD view
+            cancelCreating();
+            cancelEditing();
         }
 
         $scope.setCurrentCategory = setCurrentCategory;
         $scope.isCurrentCategory = isCurrentCategory;
 
-        //Creating and editing states
-        $scope.isCreating = false; //sets default state to false
-        $scope.isEditing = false; //sets default state to false
 
         function startCreating() {
             $scope.isCreating = true;
@@ -96,7 +64,9 @@ angular.module('Eggly', [
             return $scope.isEditing && !$scope.isCreating;
         }
 
-//crud
+        //------
+        //crud
+        //------
         function resetCreateForm() {
             $scope.newBookmark = {
                 title: '',
@@ -113,8 +83,6 @@ angular.module('Eggly', [
             console.log("bookmarks after => ", $scope.bookmarks);
             resetCreateForm();
         }
-
-        $scope.editedBookmark = null;
 
         function setEditedBookmark(bookmark) {
             $scope.editedBookmark = angular.copy(bookmark);
@@ -145,7 +113,6 @@ angular.module('Eggly', [
         $scope.updateBookmark = updateBookmark;
         $scope.setEditedBookmark = setEditedBookmark;
         $scope.deleteBookmark = deleteBookmark;
-
         $scope.startCreating = startCreating;
         $scope.cancelCreating = cancelCreating;
         $scope.startEditing = startEditing;
