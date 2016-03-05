@@ -10,7 +10,36 @@ angular.module('categories.bookmarks.create', [
             })
         ;
     })
-    .controller('CreateBookmarkCtrl', function(){
+    .controller('CreateBookmarkCtrl', function($state, $stateParams, BookmarksModel){
+        var createBookmarkCtrl = this; //top level reference to this
 
-    })
-;
+        function returnToBookmarks() {
+            $state.go('eggly.categories.bookmarks',
+                {
+                    category: $stateParams.category
+                })
+        }
+
+        function cancelCreating() {
+            returnToBookmarks();
+        }
+
+        function createBookmark(bookmark) {
+            BookmarksModel.createBookmark(bookmark);
+            returnToBookmarks();
+        }
+
+        function resetForm() {
+            createBookmarkCtrl.newBookmark = {
+                title: '',
+                url: '',
+                category: $stateParams.category
+            }
+        }
+
+        createBookmarkCtrl.cancelCreating = cancelCreating; //creates reference on bookmark controller instance
+        createBookmarkCtrl.createBookmark = createBookmark;
+
+        resetForm();
+
+    });
