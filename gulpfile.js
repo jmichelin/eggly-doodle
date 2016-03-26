@@ -4,11 +4,14 @@
 var gulp = require('gulp'),
     del = require('del'),
     runSequence = require('run-sequence'),
-    inject = require('gulp-inject');
+    inject = require('gulp-inject'),
+    serve = require('gulp-serve');
+
+var files = require('./gulp/gulp.config.js');
 
 //set default task
 gulp.task('default', function(callback){
- runSequence('build', callback);
+ runSequence('build', 'serve', callback);
 });
 
 gulp.task('build', function (callback) {
@@ -18,13 +21,11 @@ gulp.task('build', function (callback) {
         callback);
 });
 
-gulp.task('index', function () {
-    var tpl_src = ['./build/vendor/**/*.js',
-    './build/app/**/*.js',
-    './build/assets/css/**/*.css'];
+gulp.task('serve', serve ('build'));
 
+gulp.task('index', function () {
     return gulp.src('./src/index.html')
-        .pipe(inject(gulp.src(tpl_src), {ignorePath: 'build'}))
+        .pipe(inject(gulp.src(files.app_files.tpl_src), {ignorePath: 'build'}))
         .pipe(gulp.dest('./build'));
 });
 
