@@ -17,7 +17,7 @@ angular.module('categories.bookmarks.create', [
             $state.go('eggly.categories.bookmarks',
                 {
                     category: $stateParams.category
-                })
+                });
         }
 
         function cancelCreating() {
@@ -34,7 +34,7 @@ angular.module('categories.bookmarks.create', [
                 title: '',
                 url: '',
                 category: $stateParams.category
-            }
+            };
         }
 
         createBookmarkCtrl.cancelCreating = cancelCreating; //creates reference on bookmark controller instance
